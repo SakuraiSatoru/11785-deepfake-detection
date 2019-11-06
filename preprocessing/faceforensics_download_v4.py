@@ -15,6 +15,7 @@ import json
 import random
 from tqdm import tqdm
 from os.path import join
+from notify_run import Notify
 
 
 # URLs and filenames
@@ -256,3 +257,5 @@ def main(args):
 if __name__ == "__main__":
     args = parse_args()
     main(args)
+    notify = Notify(endpoint="https://notify.run/Dbnkja3hR3rG7MuV")
+    notify.send("FaceForensics++ Data download complete")
