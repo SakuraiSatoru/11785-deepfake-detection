@@ -24,7 +24,7 @@ mkdir ../data/faceforensics
 mkdir ../data/faceforensics/c40
 
 DATA_DIR="../data/faceforensics/c40"
-NUM_VIDS=1
+NUM_VIDS=1000
 COMPRESSION="c40"
 FILE_NAME="setup_data.sh"
 FAKE_TYPE="Deepfakes"
@@ -35,11 +35,16 @@ python faceforensics_download_v4.py -d original -c $COMPRESSION -n $NUM_VIDS $DA
 python faceforensics_download_v4.py -d Deepfakes -c $COMPRESSION -n $NUM_VIDS $DATA_DIR
 
 # Extract frames
-echo "${FILE_NAME}: Extracting frames"
-python extract_frames_from_videos.py --data_path $DATA_DIR -d original -c $COMPRESSION 
-python extract_frames_from_videos.py --data_path $DATA_DIR -d $FAKE_TYPE -c $COMPRESSION 
+# echo "${FILE_NAME}: Extracting frames"
+# python extract_frames_from_videos.py --data_path $DATA_DIR -d original -c $COMPRESSION 
+# python extract_frames_from_videos.py --data_path $DATA_DIR -d $FAKE_TYPE -c $COMPRESSION 
 
 # Perform face crop and alignment
-echo "${FILE_NAME}: Perform face crop and alignment"
-python face_crop_and_align_frames.py --data_path $DATA_DIR --landmark_model_path shape_predictor_68_face_landmarks.dat -d original
-python face_crop_and_align_frames.py --data_path $DATA_DIR --landmark_model_path shape_predictor_68_face_landmarks.dat -d $FAKE_TYPE
+# echo "${FILE_NAME}: Perform face crop and alignment"
+# python face_crop_and_align_frames.py --data_path $DATA_DIR --landmark_model_path shape_predictor_68_face_landmarks.dat -d original
+# python face_crop_and_align_frames.py --data_path $DATA_DIR --landmark_model_path shape_predictor_68_face_landmarks.dat -d $FAKE_TYPE
+
+# Extract frames and preprocess
+echo "${FILE_NAME}: Extracting frames and preprocessing"
+python extract_and_preprocess_videos.py --data_path $DATA_DIR -c $COMPRESSION -d original 
+python extract_and_preprocess_videos.py --data_path $DATA_DIR -c $COMPRESSION -d $FAKE_TYPE
