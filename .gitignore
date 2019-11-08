@@ -103,7 +103,12 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# vs-code
+.vscode
+*.code-workspace
+
 # Project Specific
 # Data
 data/
 preprocessing/shape_predictor_68_face_landmarks.dat*
+misc/
