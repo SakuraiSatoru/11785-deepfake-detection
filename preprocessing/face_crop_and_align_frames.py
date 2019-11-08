@@ -18,9 +18,9 @@ CROP_PADDING = 0.25
 
 def crop_and_align_images(image_path, output_path, landmark_model_path):
     """Method to crop and align each image in img_path and output into processed_img_path"""
-    # if os.path.exists(output_path): # if output directory exists
-    #     print(output_path + " exists, skipping")
-    #     return
+    if os.path.exists(output_path): # if output directory exists
+        print(output_path + " exists, skipping")
+        return
         
     os.makedirs(output_path, exist_ok=True)
 
@@ -70,4 +70,4 @@ if __name__ == '__main__':
         crop_and_align_all(**vars(args))
 
     notify = Notify(endpoint="https://notify.run/Dbnkja3hR3rG7MuV")
-    notify.send("FaceForensics++ Data download complete")
+    notify.send(" ".join(sys.argv) + " done")

@@ -4,6 +4,7 @@ Example usage:
     see -h or https://github.com/ondyari/FaceForensics
 """
 # -*- coding: utf-8 -*-
+import sys
 import argparse
 import os
 import urllib
@@ -258,4 +259,4 @@ if __name__ == "__main__":
     args = parse_args()
     main(args)
     notify = Notify(endpoint="https://notify.run/Dbnkja3hR3rG7MuV")
-    notify.send("FaceForensics++ Data download complete")
+    notify.send(" ".join(sys.argv) + " done")

@@ -6,6 +6,7 @@ Usage: see -h or https://github.com/ondyari/FaceForensics
 Author: Andreas Roessler
 Date: 25.01.2019
 """
+import sys
 import os
 from os.path import join
 import argparse
@@ -84,4 +85,4 @@ if __name__ == '__main__':
         extract_method_videos(**vars(args))
 
     notify = Notify(endpoint="https://notify.run/Dbnkja3hR3rG7MuV")
-    notify.send("FaceForensics++ Data download complete")
+    notify.send(" ".join(sys.argv) + " done")
