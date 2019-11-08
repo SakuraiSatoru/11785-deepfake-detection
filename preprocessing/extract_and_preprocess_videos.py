@@ -45,33 +45,41 @@ def preprocess_and_save_image(img, face_detector, landmark_model, output_path, f
     processed_image = dlib.get_face_chip(img, landmarks, size=CROP_SIZE, padding=CROP_PADDING)
     dlib.save_image(processed_image, join(output_path, "{:04d}.png".format(frame_num)))
 
-def extract_frames(data_path, output_path, landmark_model_path):
+def extract_frames(data_path, output_path, landmark_model_path, skip_if_dir_exists):
     """Method to extract frames, either with ffmpeg or opencv. FFmpeg won't
     start from 0 so we would have to rename if we want to keep the filenames
     coherent."""
-    if os.path.exists(output_path): # if output directory exists
-        print(output_path + " exists, skipping")
-        return
+    if skip_if_dir_exists:
+        if os.path.exists(output_path): # if output directory exists
+            print(output_path + " exists, skipping frames")
+            return
 
     # load models
     face_detector = dlib.get_frontal_face_detector()
     landmark_model = dlib.shape_predictor(landmark_model_path)
-        
+    
     os.makedirs(output_path, exist_ok=True)
     reader = cv2.VideoCapture(data_path)
     frame_num = 0
 
     while reader.isOpened():
         success, image = reader.read()
-        if not success:
+        if not success: # If reach end of video
             break
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # video captures in BGR, convert to RGB
-        preprocess_and_save_image(image, face_detector, landmark_model, output_path, frame_num)
+        # video captures in BGR, convert to RGB
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
+        # check if image exists already
+        if not os.path.exists(join(output_path, "{:04d}.png".format(frame_num))):
+            preprocess_and_save_image(image, face_detector, landmark_model, output_path, frame_num)
+        else:
+            if frame_num % 100 == 0:
+                print("{}: frame {} exists, skipping...".format(output_path.split("/")[-1], frame_num))
+
         frame_num += 1
     reader.release()
 
 
-def extract_method_videos(data_path, dataset, compression, landmark_model_path):
+def extract_method_videos(data_path, dataset, compression, landmark_model_path, skip_if_dir_exists):
     """Extracts all videos of a specified method and compression in the
     FaceForensics++ file structure"""
     videos_path = join(data_path, DATASET_PATHS[dataset], compression, 'videos')
@@ -79,11 +87,10 @@ def extract_method_videos(data_path, dataset, compression, landmark_model_path):
     for video in tqdm(os.listdir(videos_path)):
         image_folder = video.split('.')[0]
         extract_frames(join(videos_path, video),
-                       join(images_path, image_folder), landmark_model_path)
+                       join(images_path, image_folder), landmark_model_path, skip_if_dir_exists)
 
 
 if __name__ == '__main__':
-    print()
     p = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
@@ -94,6 +101,7 @@ if __name__ == '__main__':
     p.add_argument('--compression', '-c', type=str, choices=COMPRESSION,
                    default='c0')
     p.add_argument('--landmark_model_path', type=str, default='shape_predictor_68_face_landmarks.dat')
+    p.add_argument('--skip_if_dir_exists', action='store_true')
     args = p.parse_args()
 
     if args.dataset == 'all':
