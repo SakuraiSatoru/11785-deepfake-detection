@@ -47,7 +47,7 @@ python faceforensics_download_v4.py -d Deepfakes -c $COMPRESSION -n $NUM_VIDS $D
 # Extract frames and preprocess
 echo "${FILE_NAME}: Extracting frames and preprocessing"
 # Start multiple processes, skipping directories to avoid working on the same directory
-python extract_and_preprocess_videos.py --data_path $DATA_DIR -c $COMPRESSION -d original --skip_if_dir_exists
+python extract_and_preprocess_videos.py --data_path $DATA_DIR -c $COMPRESSION -d original --skip_if_dir_exists &
 python extract_and_preprocess_videos.py --data_path $DATA_DIR -c $COMPRESSION -d $FAKE_TYPE --skip_if_dir_exists
 
 # Go through the files again and finish preprocessing partial preprocesses

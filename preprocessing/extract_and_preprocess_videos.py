@@ -12,6 +12,7 @@ import os
 from os.path import join
 import argparse
 import subprocess
+import random
 import cv2
 import dlib
 from tqdm import tqdm
@@ -72,6 +73,8 @@ def extract_frames(data_path, output_path, landmark_model_path, skip_if_dir_exis
         if not os.path.exists(join(output_path, "{:04d}.png".format(frame_num))):
             preprocess_and_save_image(image, face_detector, landmark_model, output_path, frame_num)
         else:
+            if skip_if_dir_exists:
+                return
             if frame_num % 100 == 0:
                 print("{}: frame {} exists, skipping...".format(output_path.split("/")[-1], frame_num))
 
@@ -84,7 +87,9 @@ def extract_method_videos(data_path, dataset, compression, landmark_model_path, 
     FaceForensics++ file structure"""
     videos_path = join(data_path, DATASET_PATHS[dataset], compression, 'videos')
     images_path = join(data_path, DATASET_PATHS[dataset], compression, 'processed_images')
-    for video in tqdm(os.listdir(videos_path)):
+    videos = os.listdir(videos_path)
+    random.shuffle(videos)
+    for video in tqdm(videos):
         image_folder = video.split('.')[0]
         extract_frames(join(videos_path, video),
                        join(images_path, image_folder), landmark_model_path, skip_if_dir_exists)
