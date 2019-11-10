@@ -54,6 +54,9 @@ def extract_frames(data_path, output_path, landmark_model_path, skip_if_dir_exis
         if os.path.exists(output_path): # if output directory exists
             print(output_path + " exists, skipping frames")
             return
+    if output_path.split("/"[-1]) in FAKES_SKIP:
+        print("FAKES_SKIP.contains({})".format(output_path.split("/"[-1])))
+        return
 
     # load models
     face_detector = dlib.get_frontal_face_detector()

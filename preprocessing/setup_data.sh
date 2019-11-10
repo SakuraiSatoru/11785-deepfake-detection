@@ -7,8 +7,8 @@
 
 # Before running do the following:
 # Set up preprocessing environment
-# conda create --name preprocessing
-# source activate preprocessing
+# conda create --name opencv
+# source activate opencv
 # conda install -c conda-forge opencv
 # pip install tqdm
 # pip install dlib
@@ -18,10 +18,10 @@
 # wget http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
 # bzip2 -d shape_predictor_68_face_landmarks.dat.bz2
 
-# Create data directory
-mkdir ../data
-mkdir ../data/faceforensics
-mkdir ../data/faceforensics/c40
+# # Create data directory
+# mkdir ../data
+# mkdir ../data/faceforensics
+# mkdir ../data/faceforensics/c40
 
 DATA_DIR="../data/faceforensics/c40"
 NUM_VIDS=1000
@@ -55,9 +55,9 @@ python extract_and_preprocess_videos.py --data_path $DATA_DIR -c $COMPRESSION -d
 python extract_and_preprocess_videos.py --data_path $DATA_DIR -c $COMPRESSION -d $FAKE_TYPE
 
 # Benchmarking commands
-# python extract_frames_from_videos.py --data_path "../data/faceforensics/test2" -d original -c c40
-# python face_crop_and_align_frames.py --data_path "../data/faceforensics/test2" --landmark_model_path shape_predictor_68_face_landmarks.dat -d original
-# python extract_and_preprocess_videos.py --data_path "../data/faceforensics/test2" -c c40 -d original --skip_if_dir_exists
-# rm -r ../data/faceforensics/test2/
+# python extract_frames_from_videos.py --data_path "../data/faceforensics/test" -d original -c c40
+# python face_crop_and_align_frames.py --data_path "../data/faceforensics/test" --landmark_model_path shape_predictor_68_face_landmarks.dat -d original
+# python extract_and_preprocess_videos.py --data_path "../data/faceforensics/test" -c c40 -d original --skip_if_dir_exists
+# rm -r ../data/faceforensics/test/processed_images
 # ls ../data/faceforensics/c40/original_sequences/youtube/c40/processed_images | wc -l
 # ls ../data/faceforensics/c40/manipulated_sequences/Deepfakes/c40/processed_images | wc -l
