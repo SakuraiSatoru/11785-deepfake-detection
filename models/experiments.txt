@@ -1,0 +1,24 @@
+MultiModalSimpleConcatModel(/Dropout):
+model = MultiModalSimpleConcatModel()
+optimizer = torch.optim.Adam(model.parameters())
+critereon = torch.nn.CrossEntropyLoss()
+
+MultiModalAE:
+model = MultiModalAEModel()
+optim = SGD()
+our pretrained densenet
+loss - special defined, lambda 0.2
+
+
+MultiModalAELambda3Freeze
+optim = SGD()
+model = MultiModalAEModel()
+densenet deepfake initialization + freeze
+loss lambda = 0.3
+
+MultiModalAESimpleDensenet
+optim = SGD()
+model = MultiModalAESimpleDensenetModel()
+densenet deepfake initalization + freeze
+loss lambda 0.3
+densenet -> simple densenet
